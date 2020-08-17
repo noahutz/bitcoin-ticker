@@ -8,4 +8,6 @@
     <string name="title_amount">Amount</string>
     <string name="value_amount">Amount (%1$s)</string>
     <string name="amount_default_value">0.0</string>
+    <string name="title_confirm">Confirm</string>
+    <string name="title_cancel">Cancel</string>
 </resources>
