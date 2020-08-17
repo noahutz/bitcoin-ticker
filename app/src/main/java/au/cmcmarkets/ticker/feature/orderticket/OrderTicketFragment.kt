@@ -43,7 +43,7 @@ class OrderTicketFragment : DaggerFragment() {
 
     private fun updateOrderTicketView(orderTicket: OrderTicket) {
         tvTitle.text = String.format("%s - %s", orderTicket.convertFrom, orderTicket.convertTo)
-        tvAmount.text = getString(R.string.title_amount, orderTicket.currencySymbol)
+        tvAmount.text = getString(R.string.value_amount, orderTicket.currencySymbol)
         tvPriceBuy.text = orderTicket.priceBuy.toFormattedString()
         tvPriceSell.text = orderTicket.priceSell.toFormattedString()
         tvPriceDelayed.text = orderTicket.price15m.toFormattedString()
