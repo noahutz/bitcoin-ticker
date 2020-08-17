@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
 import au.cmcmarkets.ticker.core.di.viewmodel.ViewModelFactory
@@ -29,5 +30,16 @@ class OrderTicketFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_order_ticket, container, false)
-}
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.orderTicket.observe(viewLifecycleOwner, Observer {
+            updateOrderTicketView(it)
+        })
+    }
+
+    private fun updateOrderTicketView(orderTicket: OrderTicket) {
+        // TODO(update UI)
+    }
+}
