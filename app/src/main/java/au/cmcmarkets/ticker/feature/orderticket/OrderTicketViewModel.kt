@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import javax.inject.Inject
 
 
@@ -44,7 +45,7 @@ class OrderTicketViewModel @Inject constructor(
     }
 
     private fun updateOrderTicket(bitcoinPrice: BitcoinPrice) {
-        val price = bitcoinPrice.toBitcoinPrice()
+        val price = bitcoinPrice.toBitcoinPrice(orderTicket.value)
         orderTicket.postValue(price)
     }
 
@@ -54,7 +55,9 @@ class OrderTicketViewModel @Inject constructor(
         pollingJob = null
     }
 
-    private fun BitcoinPrice.toBitcoinPrice(): OrderTicket {
+    private fun BitcoinPrice.toBitcoinPrice(oldPrice: OrderTicket?): OrderTicket {
+        val priceBuyDirection = getPriceDirection(priceBuy, oldPrice?.priceBuy)
+        val priceSellDirection = getPriceDirection(priceSell, oldPrice?.priceSell)
         return OrderTicket(
             BITCOIN_CODE,
             CURRENCY_CODE,
@@ -64,8 +67,18 @@ class OrderTicketViewModel @Inject constructor(
             priceSell = priceSell,
             currencySymbol = currencySymbol,
             priceSpread = (priceBuy - priceSell).abs(),
-            priceUpdate = PriceUpdate.NEUTRAL
+            priceBuyDirection = priceBuyDirection,
+            priceSellDirection = priceSellDirection
         )
+    }
+
+    private fun getPriceDirection(newPrice: BigDecimal, oldPrice: BigDecimal?): PriceDirection {
+        return when {
+            oldPrice == null -> PriceDirection.NEUTRAL
+            newPrice < oldPrice -> PriceDirection.DOWN
+            newPrice > oldPrice -> PriceDirection.UP
+            else -> PriceDirection.NEUTRAL
+        }
     }
 }
 

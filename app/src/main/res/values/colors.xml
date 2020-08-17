@@ -6,5 +6,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="black">#000000</color>
-
+    <color name="text_color_neutral">@android:color/primary_text_light</color>
+    <color name="text_color_up">@android:color/holo_green_dark</color>
+    <color name="text_color_down">@android:color/holo_red_dark</color>
 </resources>

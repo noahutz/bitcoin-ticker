@@ -11,10 +11,11 @@ data class OrderTicket(
     val priceSell: BigDecimal,
     val currencySymbol: String,
     val priceSpread: BigDecimal,
-    val priceUpdate: PriceUpdate
+    val priceBuyDirection: PriceDirection,
+    val priceSellDirection: PriceDirection
 )
 
-enum class PriceUpdate {
+enum class PriceDirection {
     NEUTRAL,
     UP,
     DOWN

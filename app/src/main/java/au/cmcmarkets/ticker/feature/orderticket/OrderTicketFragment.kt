@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
@@ -49,5 +51,17 @@ class OrderTicketFragment : DaggerFragment() {
         tvSpread.text = orderTicket.priceSpread.toFormattedString()
         tvPriceDelayed.text = orderTicket.price15m.toFormattedString()
         tvPriceLast.text = orderTicket.priceLast.toFormattedString()
+
+        tvPriceBuy.setTextColor(getTextColor(orderTicket.priceBuyDirection))
+        tvPriceSell.setTextColor(getTextColor(orderTicket.priceSellDirection))
+    }
+
+    private fun getTextColor(priceDirection: PriceDirection): Int {
+        val colorId = when (priceDirection) {
+            PriceDirection.NEUTRAL -> R.color.text_color_neutral
+            PriceDirection.UP -> R.color.text_color_up
+            PriceDirection.DOWN -> R.color.text_color_down
+        }
+        return ResourcesCompat.getColor(resources, colorId, null)
     }
 }
