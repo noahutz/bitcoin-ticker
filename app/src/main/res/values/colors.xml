@@ -10,10 +10,10 @@
     <color name="text_color_up">#32cd32</color>
     <color name="text_color_down">@android:color/holo_red_dark</color>
     <color name="text_color_sell">#ffa500</color>
-    <color name="text_color_buy">#0892d0</color>
+    <color name="text_color_buy">#086972</color>
 
     <color name="bg_order">#111</color>
     <color name="bg_edit_text">#222</color>
     <color name="bg_order_sell">#f28500</color>
-    <color name="bg_order_buy">#0abab5</color>
+    <color name="bg_order_buy">#01a9b4</color>
 </resources>

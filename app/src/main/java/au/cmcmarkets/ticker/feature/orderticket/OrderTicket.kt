@@ -1,5 +1,6 @@
 package au.cmcmarkets.ticker.feature.orderticket
 
+import au.cmcmarkets.ticker.feature.orderticket.enums.PriceDirection
 import java.math.BigDecimal
 
 data class OrderTicket(
@@ -10,8 +11,8 @@ data class OrderTicket(
     val priceBuy: BigDecimal,
     val priceSell: BigDecimal,
     val currencySymbol: String,
-    val previousPriceBuy: BigDecimal?,
-    val previousPriceSell: BigDecimal?
+    private val previousPriceBuy: BigDecimal? = null,
+    private val previousPriceSell: BigDecimal? = null
 ) {
     val priceSpread: BigDecimal = (priceBuy - priceSell).abs()
     val priceBuyDirection: PriceDirection = getPriceDirection(priceBuy, previousPriceBuy)
@@ -25,10 +26,4 @@ data class OrderTicket(
             else -> PriceDirection.NEUTRAL
         }
     }
-}
-
-enum class PriceDirection {
-    NEUTRAL,
-    UP,
-    DOWN
 }

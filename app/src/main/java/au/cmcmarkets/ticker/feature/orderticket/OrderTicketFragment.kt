@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
@@ -13,22 +12,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
 import au.cmcmarkets.ticker.core.di.viewmodel.ViewModelFactory
-import au.cmcmarkets.ticker.utils.hasValue
+import au.cmcmarkets.ticker.feature.orderticket.enums.PriceDirection
+import au.cmcmarkets.ticker.utils.hasBigDecimalValue
 import au.cmcmarkets.ticker.utils.toFormattedString
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_order_ticket.*
-import java.math.BigDecimal
 import javax.inject.Inject
 
 class OrderTicketFragment : DaggerFragment() {
 
-    // TODO(Improvement): Presenter can be added to move this logic and make it testable
-    private var orderValue: OrderValue = OrderValue.NONE
     private val editorActionListener: TextView.OnEditorActionListener =
         TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 etUnits.clearFocus()
                 etAmount.clearFocus()
+                setConfirmButtonState()
             }
             false
         }
@@ -55,39 +53,52 @@ class OrderTicketFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setEditTextListeners()
-        viewModel.orderTicket.observe(viewLifecycleOwner, Observer {
+        viewModel.getOrderTicket().observe(viewLifecycleOwner, Observer {
             updateOrderTicketView(it)
+        })
+        viewModel.getAmountLiveData().observe(viewLifecycleOwner, Observer {
+            etAmount.setText(it.toFormattedString())
+        })
+        viewModel.getUnitLiveData().observe(viewLifecycleOwner, Observer {
+            etUnits.setText(it.toFormattedString())
         })
     }
 
-    // TODO(Improvement): Presenter can be added to move logic out of the view
     private fun setEditTextListeners() {
         etUnits.setOnEditorActionListener(editorActionListener)
         etAmount.setOnEditorActionListener(editorActionListener)
 
         etUnits.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                setDataIfHasValue(etUnits, OrderValue.UNIT)
+                viewModel.setUnit(etUnits.text.toString())
+                setConfirmButtonState()
             }
         }
 
         etAmount.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                setDataIfHasValue(etAmount, OrderValue.AMOUNT)
+                viewModel.setUnit(etUnits.text.toString())
+                setConfirmButtonState()
             }
         }
 
         etUnits.addTextChangedListener {
-            setDataIfHasValue(etUnits, OrderValue.UNIT)
+            if (etUnits.hasFocus()) {
+                it?.apply { viewModel.setUnit(toString()) }
+            }
         }
 
         etAmount.addTextChangedListener {
-            setDataIfHasValue(etAmount, OrderValue.AMOUNT)
+            if (etAmount.hasFocus()) {
+                it?.apply { viewModel.setAmount(toString()) }
+            }
         }
     }
 
-    private fun setDataIfHasValue(editText: EditText, value: OrderValue) {
-        if (editText.text.toString().hasValue()) orderValue = value
+    private fun setConfirmButtonState() {
+        val enabled = etUnits.text.toString().hasBigDecimalValue() &&
+                etAmount.text.toString().hasBigDecimalValue()
+        btnConfirm.isEnabled = enabled
     }
 
     private fun updateOrderTicketView(orderTicket: OrderTicket) {
@@ -101,18 +112,6 @@ class OrderTicketFragment : DaggerFragment() {
 
         tvPriceBuy.setTextColor(getTextColor(orderTicket.priceBuyDirection))
         tvPriceSell.setTextColor(getTextColor(orderTicket.priceSellDirection))
-
-        updateEditTextViews(orderTicket.priceBuy)
-    }
-
-    private fun updateEditTextViews(priceBuy: BigDecimal) {
-        if (orderValue == OrderValue.UNIT) {
-            val units = BigDecimal(etUnits.text.toString())
-            etAmount.setText((units * priceBuy).toFormattedString())
-        } else if (orderValue == OrderValue.AMOUNT) {
-            val value = BigDecimal(etAmount.text.toString())
-            etUnits.setText((value / priceBuy).toFormattedString())
-        }
     }
 
     private fun getTextColor(priceDirection: PriceDirection): Int {

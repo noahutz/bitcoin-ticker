@@ -1,25 +1,18 @@
 package au.cmcmarkets.ticker.utils
 
-import java.lang.NumberFormatException
 import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.ParseException
 
-fun String.hasValue(): Boolean {
-    return when (val result = toDecimal()) {
-        is DecimalConversion.Success -> result.value > BigDecimal.ZERO
-        is DecimalConversion.Error -> false
-    }
-}
-
-fun String.toDecimal(): DecimalConversion {
+fun String.toBigDecimalValueOrNull(): BigDecimal? {
     return try {
-        val value = BigDecimal(this)
-        DecimalConversion.Success(value)
-    } catch (e: NumberFormatException) {
-        DecimalConversion.Error(e)
+        val number = DecimalFormat.getNumberInstance().parse(this)
+        number?.let { BigDecimal(it.toString()) }
+    } catch (e: ParseException) {
+        null
     }
 }
 
-sealed class DecimalConversion {
-    data class Success(val value: BigDecimal) : DecimalConversion()
-    data class Error(val exception: Exception) : DecimalConversion()
+fun String.hasBigDecimalValue(): Boolean {
+    return toBigDecimalValueOrNull()?.let { it > BigDecimal.ZERO } ?: false
 }
