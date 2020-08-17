@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
 import au.cmcmarkets.ticker.core.di.viewmodel.ViewModelFactory
+import au.cmcmarkets.ticker.utils.hasValue
 import au.cmcmarkets.ticker.utils.toFormattedString
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_order_ticket.*
@@ -19,11 +22,13 @@ import javax.inject.Inject
 
 class OrderTicketFragment : DaggerFragment() {
 
+    // TODO(Improvement): Presenter can be added to move this logic and make it testable
+    private var orderValue: OrderValue = OrderValue.NONE
     private val editorActionListener: TextView.OnEditorActionListener =
         TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 etUnits.clearFocus()
-                etValue.clearFocus()
+                etAmount.clearFocus()
             }
             false
         }
@@ -55,9 +60,34 @@ class OrderTicketFragment : DaggerFragment() {
         })
     }
 
+    // TODO(Improvement): Presenter can be added to move logic out of the view
     private fun setEditTextListeners() {
         etUnits.setOnEditorActionListener(editorActionListener)
-        etValue.setOnEditorActionListener(editorActionListener)
+        etAmount.setOnEditorActionListener(editorActionListener)
+
+        etUnits.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setDataIfHasValue(etUnits, OrderValue.UNIT)
+            }
+        }
+
+        etAmount.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setDataIfHasValue(etAmount, OrderValue.AMOUNT)
+            }
+        }
+
+        etUnits.addTextChangedListener {
+            setDataIfHasValue(etUnits, OrderValue.UNIT)
+        }
+
+        etAmount.addTextChangedListener {
+            setDataIfHasValue(etAmount, OrderValue.AMOUNT)
+        }
+    }
+
+    private fun setDataIfHasValue(editText: EditText, value: OrderValue) {
+        if (editText.text.toString().hasValue()) orderValue = value
     }
 
     private fun updateOrderTicketView(orderTicket: OrderTicket) {
@@ -76,11 +106,11 @@ class OrderTicketFragment : DaggerFragment() {
     }
 
     private fun updateEditTextViews(priceBuy: BigDecimal) {
-        if (etUnits.isFocused) {
+        if (orderValue == OrderValue.UNIT) {
             val units = BigDecimal(etUnits.text.toString())
-            etValue.setText((units * priceBuy).toFormattedString())
-        } else if (etValue.isFocused) {
-            val value = BigDecimal(etValue.text.toString())
+            etAmount.setText((units * priceBuy).toFormattedString())
+        } else if (orderValue == OrderValue.AMOUNT) {
+            val value = BigDecimal(etAmount.text.toString())
             etUnits.setText((value / priceBuy).toFormattedString())
         }
     }

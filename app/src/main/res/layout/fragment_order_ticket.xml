@@ -148,7 +148,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title_amount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/etValue"
+        app:layout_constraintStart_toStartOf="@+id/etAmount"
         app:layout_constraintTop_toTopOf="@+id/tvUnits" />
 
     <EditText
@@ -164,12 +164,12 @@
         android:hint="@string/title_units"
         android:inputType="numberDecimal"
         android:text="@string/amount_default_value"
-        app:layout_constraintEnd_toStartOf="@+id/etValue"
+        app:layout_constraintEnd_toStartOf="@+id/etAmount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUnits" />
 
     <EditText
-        android:id="@+id/etValue"
+        android:id="@+id/etAmount"
         style="@style/Base.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -204,6 +204,7 @@
         android:layout_marginStart="@dimen/default_margin_half"
         android:layout_marginEnd="@dimen/default_margin_half"
         android:backgroundTint="@color/bg_btn_buy_selector"
+        android:enabled="false"
         android:text="@string/title_confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

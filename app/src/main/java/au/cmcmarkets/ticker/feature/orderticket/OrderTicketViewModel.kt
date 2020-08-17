@@ -21,10 +21,11 @@ class OrderTicketViewModel @Inject constructor(
     companion object {
         private const val DELAY_POLL = 15000L
 
+        // TODO(Improvement): Should be set when fragment
         private const val BITCOIN_CODE = "BTC"
 
-        // TODO(Set from fragment)
-        private const val CURRENCY_CODE = "USD"
+        // TODO(Improvement): Should be set when fragment has been loaded with specific currency
+        private const val CURRENCY_CODE = "GBP"
     }
 
     var orderTicket: MutableLiveData<OrderTicket> = MutableLiveData()
