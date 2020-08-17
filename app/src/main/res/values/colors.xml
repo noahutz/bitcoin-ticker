@@ -6,7 +6,13 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="black">#000000</color>
-    <color name="text_color_neutral">@android:color/primary_text_light</color>
-    <color name="text_color_up">@android:color/holo_green_dark</color>
+    <color name="text_color_neutral">@android:color/white</color>
+    <color name="text_color_up">#32cd32</color>
     <color name="text_color_down">@android:color/holo_red_dark</color>
+    <color name="text_color_sell">#ffa500</color>
+    <color name="text_color_buy">#0892d0</color>
+
+    <color name="bg_order">#111</color>
+    <color name="bg_order_sell">#f28500</color>
+    <color name="bg_order_buy">#0abab5</color>
 </resources>

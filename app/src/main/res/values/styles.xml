@@ -9,4 +9,34 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Base.TextView" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Base.TextView.Sell">
+        <item name="android:textColor">@color/text_color_sell</item>
+    </style>
+
+    <style name="Base.TextView.Buy">
+        <item name="android:textColor">@color/text_color_buy</item>
+    </style>
+
+    <style name="Base.EditText" parent="@android:style/TextAppearance.Widget.EditText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Base.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/bg_order_buy</item>
+        <item name="android:colorButtonNormal">@color/bg_order_buy</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ButtonColor" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/bg_order_buy</item>
+    </style>
+
+    <style name="Base.Button.Buy">
+        <item name="colorButtonNormal">@color/bg_order_buy</item>
+        <item name="android:colorButtonNormal">@color/bg_order_buy</item>
+    </style>
 </resources>

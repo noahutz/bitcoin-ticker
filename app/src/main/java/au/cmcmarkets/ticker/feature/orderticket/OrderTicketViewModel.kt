@@ -34,11 +34,11 @@ class OrderTicketViewModel @Inject constructor(
     fun startPolling() {
         pollingJob = viewModelScope.launch(Dispatchers.IO) {
             while (true) {
-                delay(DELAY_POLL)
                 val priceUpdates = priceRepository.getPriceUpdates()
                 priceUpdates[CURRENCY_CODE]?.let {
                     updateOrderTicket(it)
                 }
+                delay(DELAY_POLL)
             }
         }
     }
