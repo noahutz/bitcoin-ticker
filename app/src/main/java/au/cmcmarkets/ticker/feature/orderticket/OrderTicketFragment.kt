@@ -19,22 +19,15 @@ class OrderTicketFragment : DaggerFragment() {
         ViewModelProvider(this, viewModelFactory).get(OrderTicketViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(viewModel)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_order_ticket, container, false)
-
-    override fun onResume() {
-        super.onResume()
-
-        // TODO("Resume Polling")
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        // TODO("Stop polling")
-    }
 }
 
