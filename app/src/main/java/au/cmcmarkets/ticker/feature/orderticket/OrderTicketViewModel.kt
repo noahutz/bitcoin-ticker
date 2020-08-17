@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 import javax.inject.Inject
 
 
@@ -25,7 +24,7 @@ class OrderTicketViewModel @Inject constructor(
         private const val BITCOIN_CODE = "BTC"
 
         // TODO(Set from fragment)
-        private const val CURRENCY_CODE = "GBP"
+        private const val CURRENCY_CODE = "USD"
     }
 
     var orderTicket: MutableLiveData<OrderTicket> = MutableLiveData()
@@ -44,20 +43,18 @@ class OrderTicketViewModel @Inject constructor(
         }
     }
 
-    private fun updateOrderTicket(bitcoinPrice: BitcoinPrice) {
-        val price = bitcoinPrice.toBitcoinPrice(orderTicket.value)
-        orderTicket.postValue(price)
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun stopPolling() {
         pollingJob?.cancel()
         pollingJob = null
     }
 
-    private fun BitcoinPrice.toBitcoinPrice(oldPrice: OrderTicket?): OrderTicket {
-        val priceBuyDirection = getPriceDirection(priceBuy, oldPrice?.priceBuy)
-        val priceSellDirection = getPriceDirection(priceSell, oldPrice?.priceSell)
+    private fun updateOrderTicket(bitcoinPrice: BitcoinPrice) {
+        val newOrderTicket = bitcoinPrice.toOrderTicket(orderTicket.value)
+        orderTicket.postValue(newOrderTicket)
+    }
+
+    private fun BitcoinPrice.toOrderTicket(oldOrderTicket: OrderTicket?): OrderTicket {
         return OrderTicket(
             BITCOIN_CODE,
             CURRENCY_CODE,
@@ -66,19 +63,9 @@ class OrderTicketViewModel @Inject constructor(
             priceBuy = priceBuy,
             priceSell = priceSell,
             currencySymbol = currencySymbol,
-            priceSpread = (priceBuy - priceSell).abs(),
-            priceBuyDirection = priceBuyDirection,
-            priceSellDirection = priceSellDirection
+            previousPriceBuy = oldOrderTicket?.priceBuy,
+            previousPriceSell = oldOrderTicket?.priceSell
         )
-    }
-
-    private fun getPriceDirection(newPrice: BigDecimal, oldPrice: BigDecimal?): PriceDirection {
-        return when {
-            oldPrice == null -> PriceDirection.NEUTRAL
-            newPrice < oldPrice -> PriceDirection.DOWN
-            newPrice > oldPrice -> PriceDirection.UP
-            else -> PriceDirection.NEUTRAL
-        }
     }
 }
 

@@ -2,10 +2,16 @@ package au.cmcmarkets.ticker.utils
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.util.*
 
-private const val DECIMAL_POINTS = 2
-private val ROUNDING_MODE = RoundingMode.HALF_EVEN
+fun BigDecimal.toFormattedCurrency(): String {
+    val decimalFormat = DecimalFormat.getInstance()
+    return decimalFormat.format(setScale(2, RoundingMode.HALF_EVEN))
+}
 
 fun BigDecimal.toFormattedString(): String {
-    return this.setScale(DECIMAL_POINTS, ROUNDING_MODE).toString()
+    return this.stripTrailingZeros().toString()
 }
