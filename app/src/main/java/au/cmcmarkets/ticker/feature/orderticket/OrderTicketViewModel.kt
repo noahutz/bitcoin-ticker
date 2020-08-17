@@ -19,7 +19,7 @@ class OrderTicketViewModel @Inject constructor(
     private val priceRepository: PriceRepository
 ) : ViewModel(), LifecycleObserver {
     companion object {
-        private const val DELAY_POLL = 500L
+        private const val DELAY_POLL = 15000L
 
         private const val BITCOIN_CODE = "BTC"
 

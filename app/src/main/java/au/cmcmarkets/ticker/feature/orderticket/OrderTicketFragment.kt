@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
 import au.cmcmarkets.ticker.core.di.viewmodel.ViewModelFactory
-import au.cmcmarkets.ticker.utils.toFormattedCurrency
 import au.cmcmarkets.ticker.utils.toFormattedString
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_order_ticket.*
@@ -64,11 +63,11 @@ class OrderTicketFragment : DaggerFragment() {
     private fun updateOrderTicketView(orderTicket: OrderTicket) {
         tvTitle.text = String.format("%s - %s", orderTicket.convertFrom, orderTicket.convertTo)
         tvAmount.text = getString(R.string.value_amount, orderTicket.currencySymbol)
-        tvPriceBuy.text = orderTicket.priceBuy.toFormattedCurrency()
-        tvPriceSell.text = orderTicket.priceSell.toFormattedCurrency()
-        tvSpread.text = orderTicket.priceSpread.toFormattedCurrency()
-        tvPriceDelayed.text = orderTicket.price15m.toFormattedCurrency()
-        tvPriceLast.text = orderTicket.priceLast.toFormattedCurrency()
+        tvPriceBuy.text = orderTicket.priceBuy.toFormattedString()
+        tvPriceSell.text = orderTicket.priceSell.toFormattedString()
+        tvSpread.text = orderTicket.priceSpread.toFormattedString()
+        tvPriceDelayed.text = orderTicket.price15m.toFormattedString()
+        tvPriceLast.text = orderTicket.priceLast.toFormattedString()
 
         tvPriceBuy.setTextColor(getTextColor(orderTicket.priceBuyDirection))
         tvPriceSell.setTextColor(getTextColor(orderTicket.priceSellDirection))

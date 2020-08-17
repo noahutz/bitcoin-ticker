@@ -3,15 +3,10 @@ package au.cmcmarkets.ticker.utils
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.*
 
-fun BigDecimal.toFormattedCurrency(): String {
-    val decimalFormat = DecimalFormat.getInstance()
-    return decimalFormat.format(setScale(2, RoundingMode.HALF_EVEN))
-}
-
+/**
+ * Formats BigDecimal to round of to 2 decimal places
+ */
 fun BigDecimal.toFormattedString(): String {
-    return this.stripTrailingZeros().toString()
+    return DecimalFormat.getInstance().format(setScale(2, RoundingMode.HALF_EVEN))
 }
