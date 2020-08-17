@@ -22,6 +22,7 @@ class OrderTicketViewModel @Inject constructor(
         private const val DELAY_POLL = 500L
 
         private const val BITCOIN_CODE = "BTC"
+
         // TODO(Set from fragment)
         private const val CURRENCY_CODE = "GBP"
     }
@@ -36,10 +37,15 @@ class OrderTicketViewModel @Inject constructor(
                 delay(DELAY_POLL)
                 val priceUpdates = priceRepository.getPriceUpdates()
                 priceUpdates[CURRENCY_CODE]?.let {
-                    orderTicket.postValue(it.toBitcoinPrice())
+                    updateOrderTicket(it)
                 }
             }
         }
+    }
+
+    private fun updateOrderTicket(bitcoinPrice: BitcoinPrice) {
+        val price = bitcoinPrice.toBitcoinPrice()
+        orderTicket.postValue(price)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -48,15 +54,18 @@ class OrderTicketViewModel @Inject constructor(
         pollingJob = null
     }
 
-    private fun BitcoinPrice.toBitcoinPrice(): OrderTicket =
-        OrderTicket(
+    private fun BitcoinPrice.toBitcoinPrice(): OrderTicket {
+        return OrderTicket(
             BITCOIN_CODE,
             CURRENCY_CODE,
             price15m = price15m,
             priceLast = priceLast,
             priceBuy = priceBuy,
             priceSell = priceSell,
-            currencySymbol = currencySymbol
+            currencySymbol = currencySymbol,
+            priceSpread = (priceBuy - priceSell).abs(),
+            priceUpdate = PriceUpdate.NEUTRAL
         )
+    }
 }
 

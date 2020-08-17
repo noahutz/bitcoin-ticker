@@ -46,6 +46,7 @@ class OrderTicketFragment : DaggerFragment() {
         tvAmount.text = getString(R.string.value_amount, orderTicket.currencySymbol)
         tvPriceBuy.text = orderTicket.priceBuy.toFormattedString()
         tvPriceSell.text = orderTicket.priceSell.toFormattedString()
+        tvSpread.text = orderTicket.priceSpread.toFormattedString()
         tvPriceDelayed.text = orderTicket.price15m.toFormattedString()
         tvPriceLast.text = orderTicket.priceLast.toFormattedString()
     }

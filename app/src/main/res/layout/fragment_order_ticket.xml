@@ -29,14 +29,26 @@
 
     <TextView
         android:id="@+id/tvPriceSell"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_half"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvPriceBuy"
+        app:layout_constraintEnd_toStartOf="@+id/tvSpread"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSell"
         tools:text="7,449.79" />
+
+    <TextView
+        android:id="@+id/tvSpread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPriceSell"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPriceSell"
+        tools:text="1.00" />
 
     <TextView
         android:id="@+id/tvBuy"
@@ -48,10 +60,14 @@
 
     <TextView
         android:id="@+id/tvPriceBuy"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:gravity="end"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tvSpread"
         app:layout_constraintTop_toBottomOf="@+id/tvBuy"
         tools:text="7,450.79" />
 
@@ -59,6 +75,7 @@
         android:id="@+id/tvDelayed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_half"
         android:text="@string/title_price_15m"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPriceSell" />
@@ -76,9 +93,10 @@
         android:id="@+id/tvLast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
         android:text="@string/title_price_last"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDelayed" />
+        app:layout_constraintStart_toEndOf="@+id/tvPriceDelayed"
+        app:layout_constraintTop_toTopOf="@+id/tvDelayed" />
 
     <TextView
         android:id="@+id/tvPriceLast"
@@ -93,7 +111,7 @@
         android:id="@+id/tvUnits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/default_margin"
         android:text="@string/title_units"
         app:layout_constraintEnd_toEndOf="@+id/etUnits"
         app:layout_constraintStart_toStartOf="@+id/etUnits"
@@ -113,6 +131,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/default_margin_half"
+        android:autofillHints="@string/title_amount"
+        android:gravity="center"
         android:hint="@string/title_units"
         android:inputType="numberDecimal"
         android:text="@string/amount_default_value"
@@ -125,6 +145,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_half"
+        android:autofillHints="@string/title_amount"
+        android:gravity="center"
         android:hint="@string/title_amount"
         android:inputType="numberDecimal"
         android:text="@string/amount_default_value"
