@@ -21,6 +21,7 @@ class OrderTicketViewModel @Inject constructor(
     companion object {
         private const val DELAY_POLL = 500L
 
+        private const val BITCOIN_CODE = "BTC"
         // TODO(Set from fragment)
         private const val CURRENCY_CODE = "GBP"
     }
@@ -46,14 +47,16 @@ class OrderTicketViewModel @Inject constructor(
         pollingJob?.cancel()
         pollingJob = null
     }
-}
 
-private fun BitcoinPrice.toBitcoinPrice(): OrderTicket =
-    OrderTicket(
-        price15m = price15m,
-        priceLast = priceLast,
-        priceBuy = priceBuy,
-        priceSell = priceSell,
-        currencySymbol = currencySymbol
-    )
+    private fun BitcoinPrice.toBitcoinPrice(): OrderTicket =
+        OrderTicket(
+            BITCOIN_CODE,
+            CURRENCY_CODE,
+            price15m = price15m,
+            priceLast = priceLast,
+            priceBuy = priceBuy,
+            priceSell = priceSell,
+            currencySymbol = currencySymbol
+        )
+}
 

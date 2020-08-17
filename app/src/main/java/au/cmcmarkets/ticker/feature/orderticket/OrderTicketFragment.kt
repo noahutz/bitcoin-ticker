@@ -8,7 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import au.cmcmarkets.ticker.R
 import au.cmcmarkets.ticker.core.di.viewmodel.ViewModelFactory
+import au.cmcmarkets.ticker.utils.toFormattedString
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_order_ticket.*
 import javax.inject.Inject
 
 class OrderTicketFragment : DaggerFragment() {
@@ -40,6 +42,11 @@ class OrderTicketFragment : DaggerFragment() {
     }
 
     private fun updateOrderTicketView(orderTicket: OrderTicket) {
-        // TODO(update UI)
+        tvTitle.text = String.format("%s - %s", orderTicket.convertFrom, orderTicket.convertTo)
+        tvAmount.text = getString(R.string.title_amount, orderTicket.currencySymbol)
+        tvPriceBuy.text = orderTicket.priceBuy.toFormattedString()
+        tvPriceSell.text = orderTicket.priceSell.toFormattedString()
+        tvPriceDelayed.text = orderTicket.price15m.toFormattedString()
+        tvPriceLast.text = orderTicket.priceLast.toFormattedString()
     }
 }
