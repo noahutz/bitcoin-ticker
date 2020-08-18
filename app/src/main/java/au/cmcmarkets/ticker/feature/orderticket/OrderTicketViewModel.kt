@@ -23,7 +23,7 @@ class OrderTicketViewModel @Inject constructor(
     private val priceRepository: PriceRepository
 ) : ViewModel(), LifecycleObserver {
     companion object {
-        private const val DELAY_POLL = 100L
+        private const val DELAY_POLL = 15000L
 
         // TODO(Improvement): Should be set when fragment
         private const val BITCOIN_CODE = "BTC"
